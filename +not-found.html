@@ -17,7 +17,81 @@ input[type="checkbox"], input[type="radio"], progress { accent-color: #0F7A4C; }
 * { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.22) transparent; }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 4px; }
-::-webkit-scrollbar-track { background: transparent; }</style><style id="react-native-stylesheet">[stylesheet-group="0"]{}
+::-webkit-scrollbar-track { background: transparent; }</style><style>[data-hi-magic="dot-pattern"] {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle, var(--hi-dot-color, #DEDED8) var(--hi-dot-size, 1.5px), transparent calc(var(--hi-dot-size, 1.5px) + 0.75px));
+  background-size: var(--hi-dot-spacing, 24px) var(--hi-dot-spacing, 24px);
+}
+[data-hi-magic="grid-pattern"] {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--hi-line-color, #EDEDE8) var(--hi-line-width, 1px), transparent var(--hi-line-width, 1px)),
+    linear-gradient(to bottom, var(--hi-line-color, #EDEDE8) var(--hi-line-width, 1px), transparent var(--hi-line-width, 1px));
+  background-size: var(--hi-grid-spacing, 40px) var(--hi-grid-spacing, 40px);
+}
+@keyframes shimmerSweep {
+  0% { transform: translateX(-170%) skewX(-20deg); }
+  50% { transform: translateX(330%) skewX(-20deg); }
+  100% { transform: translateX(330%) skewX(-20deg); }
+}
+[data-hi-magic="shine-band"] {
+  position: absolute; top: -50%; bottom: -50%; left: 0;
+  width: 55%; pointer-events: none;
+  transform: translateX(-170%) skewX(-20deg);
+  background-image: linear-gradient(105deg, transparent 0%, var(--hi-shine-color, rgba(255,255,255,0.35)) 50%, transparent 100%);
+  animation: shimmerSweep var(--hi-shine-duration, 2.6s) ease-in-out infinite;
+}
+@keyframes gradientShift {
+  to { background-position: 300% 0; }
+}
+[data-hi-magic="gradient-text"] {
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  animation: gradientShift var(--hi-grad-duration, 6s) linear infinite;
+}
+@keyframes beamRotate {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+[data-hi-magic="border-beam"] {
+  pointer-events: none;
+  position: absolute; inset: 0; border-radius: inherit;
+  border: var(--hi-beam-width, 1px) solid transparent;
+  -webkit-mask: linear-gradient(transparent, transparent), linear-gradient(#000, #000);
+  -webkit-mask-clip: padding-box, border-box;
+  -webkit-mask-composite: source-in;
+  mask: linear-gradient(transparent, transparent), linear-gradient(#000, #000);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+}
+[data-hi-magic="beam-dot"] {
+  position: absolute; aspect-ratio: 1;
+  width: var(--hi-beam-size, 60px);
+  background-image: linear-gradient(to left, var(--hi-beam-from, #8FD4B2), var(--hi-beam-to, #0F7A4C), transparent);
+  offset-path: rect(0 auto auto 0 round var(--hi-beam-radius, 8px));
+  animation: beamRotate var(--hi-beam-duration, 5s) linear infinite;
+}
+@supports not (offset-path: rect(0 0 0 0)) {
+  [data-hi-magic="beam-dot"] { display: none; }
+}
+@keyframes blurFadeIn {
+  from { opacity: 0; transform: translateY(var(--hi-bf-y, 6px)); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+[data-hi-magic="blur-fade"] {
+  animation: blurFadeIn var(--hi-bf-duration, 400ms) cubic-bezier(0.4, 0, 0.2, 1) var(--hi-bf-delay, 0ms) backwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-hi-magic="shine-band"], [data-hi-magic="beam-dot"],
+  [data-hi-magic="gradient-text"], [data-hi-magic="blur-fade"] {
+    animation: none !important;
+  }
+  /* 빔 정지 → 잔상 대신 정적 accent 링으로 폴백 */
+  [data-hi-magic="border-beam"] {
+    border-color: var(--hi-beam-to, #0F7A4C);
+  }
+}</style><style id="react-native-stylesheet">[stylesheet-group="0"]{}
 body{margin:0;}
 button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0;}
 html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:rgba(0,0,0,0);}
@@ -147,6 +221,8 @@ input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-web
 .r-15i92mo{box-shadow:0px 0px 0px rgba(0,0,0,0.00);}
 .r-15zivkp{margin-bottom:4px;}
 .r-16dba41{font-weight:400;}
+.r-16koqjr{bottom:-50%;}
+.r-16krg75{letter-spacing:-1px;}
 .r-16wqof{padding-bottom:48px;}
 .r-16y2uox{flex-grow:1;}
 .r-173mn98{align-self:flex-end;}
@@ -247,6 +323,7 @@ input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-web
 .r-1ssbvtb{gap:12px;}
 .r-1sxrcry{background-size:auto;}
 .r-1tlso52{color:rgba(27,29,26,1.00);}
+.r-1ubobe0{top:-50%;}
 .r-1udbk01{text-overflow:ellipsis;}
 .r-1ui5ee8{font-size:32px;}
 .r-1v1z2uz{margin-top:32px;}
@@ -308,6 +385,7 @@ input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-web
 .r-aruset{font-weight:200;}
 .r-b88u0q{font-weight:700;}
 .r-bi4vy9{transform:translateY(100%);}
+.r-bnwqim{position:relative;}
 .r-bt1l66{min-height:20px;}
 .r-buy8e9{overflow-y:hidden;}
 .r-bv2aro{padding-left:env(safe-area-inset-left);}
@@ -411,6 +489,6 @@ input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-web
 @keyframes r-1pzkwqh{0%{transform:translateY(100%);}100%{transform:translateY(0%);}}
 @keyframes r-imtty0{0%{opacity:0;}100%{opacity:1;}}
 @keyframes r-q67da2{0%{transform:translateX(-100%);}100%{transform:translateX(400%);}}
-@keyframes r-t2lo5v{0%{opacity:1;}100%{opacity:0;}}</style><link rel="icon" href="/favicon.ico"/><script type="module">globalThis.__EXPO_ROUTER_HYDRATE__=true;</script></head><body><div id="root"><div class="css-g5y9jx r-13awgt0"><!--$--><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx" style="flex:1;background-color:rgba(255,255,255,1.00)" id="web-safe-shell"><div class="css-g5y9jx r-14lw9ot r-13awgt0"><div style="position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;visibility:hidden"></div><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx r-13awgt0 r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af" style="background-color:rgba(242,242,242,1.00);display:flex"><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx r-13awgt0" style="background-color:rgba(255,255,255,1.00)"><!--$--><div class="css-g5y9jx r-14lw9ot r-13awgt0" style="padding-bottom:16px"><div class="css-g5y9jx r-1kihuf0 r-14lw9ot r-16y2uox r-13qz1uu r-1iusvr4 r-1wbh5a2 r-ifefl9" style="max-width:720px;padding-right:24px;padding-left:24px"><div class="css-g5y9jx r-1awozwy r-13awgt0 r-1ssbvtb r-1777fci"><div dir="auto" class="css-146c3p1 r-1k55rm0 r-h20szi r-n6v787 r-16dba41">404</div><div dir="auto" class="css-146c3p1 r-1tlso52 r-h20szi r-yy2aun r-b88u0q r-12sm5po r-q4m81j">페이지를 찾을 수 없어요</div><div dir="auto" class="css-146c3p1 r-1l1yhi5 r-h20szi r-ubezar r-16dba41 r-q4m81j">주소가 바뀌었거나 없는 화면이에요.<!-- -->
-<!-- -->홈에서 다시 시작해보세요.</div><div class="css-g5y9jx r-11c0sde r-mm4cm5"><button role="button" tabindex="0" class="css-g5y9jx r-1loqt21 r-1otgn73 r-1awozwy r-1ydrr63 r-1xfd6ze r-1777fci r-1pl7oy7 r-1ps3wis r-11f147o r-3pj75a" type="button"><div dir="auto" class="css-146c3p1 r-jwli3a r-h20szi r-ubezar r-1kfrs79">홈으로</div></button></div></div></div></div><!--/$--></div></div></div></div></div></div></div><!--/$--></div></div><script src="/_expo/static/js/web/entry-fc865f24fd859bacdd4a4472801f8147.js" defer></script>
+@keyframes r-t2lo5v{0%{opacity:1;}100%{opacity:0;}}</style><link rel="icon" href="/favicon.ico"/><script type="module">globalThis.__EXPO_ROUTER_HYDRATE__=true;</script></head><body><div id="root"><div class="css-g5y9jx r-13awgt0"><!--$--><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx" style="flex:1;background-color:rgba(255,255,255,1.00)" id="web-safe-shell"><div class="css-g5y9jx r-14lw9ot r-13awgt0"><div style="position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;visibility:hidden"></div><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx r-13awgt0 r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af" style="background-color:rgba(242,242,242,1.00);display:flex"><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx r-13awgt0" style="background-color:rgba(255,255,255,1.00)"><!--$--><div class="css-g5y9jx r-14lw9ot r-13awgt0" style="padding-bottom:16px"><div class="css-g5y9jx r-1kihuf0 r-14lw9ot r-16y2uox r-13qz1uu r-1iusvr4 r-1wbh5a2 r-ifefl9" style="max-width:720px;padding-right:24px;padding-left:24px"><div class="css-g5y9jx r-1awozwy r-13awgt0 r-1777fci"><div data-hi-magic="dot-pattern" class="css-g5y9jx r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af r-633pao" style="opacity:1;--hi-dot-color:#DEDED8;--hi-dot-size:1.5px;--hi-dot-spacing:24px"></div><div data-hi-magic="blur-fade" class="css-g5y9jx" style="--hi-bf-delay:0ms;--hi-bf-duration:400ms;--hi-bf-y:6px"><div class="css-g5y9jx r-1awozwy r-1ssbvtb"><div dir="auto" data-hi-magic="gradient-text" class="css-146c3p1 r-h20szi r-19oahor r-1vr29t4 r-16krg75 r-1kihuf0" style="background-image:linear-gradient(90deg, #0F7A4C, #8FD4B2, #0F7A4C);background-size:300% 100%;--hi-grad-duration:6000ms">404</div><div dir="auto" class="css-146c3p1 r-1tlso52 r-h20szi r-yy2aun r-b88u0q r-12sm5po r-q4m81j">페이지를 찾을 수 없어요</div><div dir="auto" class="css-146c3p1 r-1l1yhi5 r-h20szi r-ubezar r-16dba41 r-q4m81j">주소가 바뀌었거나 없는 화면이에요.<!-- -->
+<!-- -->홈에서 다시 시작해보세요.</div><div class="css-g5y9jx r-11c0sde r-mm4cm5"><button role="button" tabindex="0" class="css-g5y9jx r-1loqt21 r-1otgn73 r-1awozwy r-1ydrr63 r-1xfd6ze r-1777fci r-1pl7oy7 r-1ps3wis r-1udh08x r-11f147o r-3pj75a" type="button"><div dir="auto" class="css-146c3p1 r-jwli3a r-h20szi r-ubezar r-1kfrs79">홈으로</div><div data-hi-magic="shine-band" class="css-g5y9jx r-633pao" style="position:absolute;top:-50%;bottom:-50%;left:0px;width:55%;transform:translateX(-170%) skewX(-20deg);--hi-shine-color:rgba(255,255,255,0.35);--hi-shine-duration:2600ms"></div></button></div></div></div></div></div></div><!--/$--></div></div></div></div></div></div></div><!--/$--></div></div><script src="/_expo/static/js/web/entry-03f4b232fba7a5c0874da821d8ba99d4.js" defer></script>
 </body></html>

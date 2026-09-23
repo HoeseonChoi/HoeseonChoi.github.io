@@ -17,7 +17,81 @@ input[type="checkbox"], input[type="radio"], progress { accent-color: #0F7A4C; }
 * { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.22) transparent; }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 4px; }
-::-webkit-scrollbar-track { background: transparent; }</style><style id="react-native-stylesheet">[stylesheet-group="0"]{}
+::-webkit-scrollbar-track { background: transparent; }</style><style>[data-hi-magic="dot-pattern"] {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle, var(--hi-dot-color, #DEDED8) var(--hi-dot-size, 1.5px), transparent calc(var(--hi-dot-size, 1.5px) + 0.75px));
+  background-size: var(--hi-dot-spacing, 24px) var(--hi-dot-spacing, 24px);
+}
+[data-hi-magic="grid-pattern"] {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--hi-line-color, #EDEDE8) var(--hi-line-width, 1px), transparent var(--hi-line-width, 1px)),
+    linear-gradient(to bottom, var(--hi-line-color, #EDEDE8) var(--hi-line-width, 1px), transparent var(--hi-line-width, 1px));
+  background-size: var(--hi-grid-spacing, 40px) var(--hi-grid-spacing, 40px);
+}
+@keyframes shimmerSweep {
+  0% { transform: translateX(-170%) skewX(-20deg); }
+  50% { transform: translateX(330%) skewX(-20deg); }
+  100% { transform: translateX(330%) skewX(-20deg); }
+}
+[data-hi-magic="shine-band"] {
+  position: absolute; top: -50%; bottom: -50%; left: 0;
+  width: 55%; pointer-events: none;
+  transform: translateX(-170%) skewX(-20deg);
+  background-image: linear-gradient(105deg, transparent 0%, var(--hi-shine-color, rgba(255,255,255,0.35)) 50%, transparent 100%);
+  animation: shimmerSweep var(--hi-shine-duration, 2.6s) ease-in-out infinite;
+}
+@keyframes gradientShift {
+  to { background-position: 300% 0; }
+}
+[data-hi-magic="gradient-text"] {
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  animation: gradientShift var(--hi-grad-duration, 6s) linear infinite;
+}
+@keyframes beamRotate {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+[data-hi-magic="border-beam"] {
+  pointer-events: none;
+  position: absolute; inset: 0; border-radius: inherit;
+  border: var(--hi-beam-width, 1px) solid transparent;
+  -webkit-mask: linear-gradient(transparent, transparent), linear-gradient(#000, #000);
+  -webkit-mask-clip: padding-box, border-box;
+  -webkit-mask-composite: source-in;
+  mask: linear-gradient(transparent, transparent), linear-gradient(#000, #000);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+}
+[data-hi-magic="beam-dot"] {
+  position: absolute; aspect-ratio: 1;
+  width: var(--hi-beam-size, 60px);
+  background-image: linear-gradient(to left, var(--hi-beam-from, #8FD4B2), var(--hi-beam-to, #0F7A4C), transparent);
+  offset-path: rect(0 auto auto 0 round var(--hi-beam-radius, 8px));
+  animation: beamRotate var(--hi-beam-duration, 5s) linear infinite;
+}
+@supports not (offset-path: rect(0 0 0 0)) {
+  [data-hi-magic="beam-dot"] { display: none; }
+}
+@keyframes blurFadeIn {
+  from { opacity: 0; transform: translateY(var(--hi-bf-y, 6px)); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+[data-hi-magic="blur-fade"] {
+  animation: blurFadeIn var(--hi-bf-duration, 400ms) cubic-bezier(0.4, 0, 0.2, 1) var(--hi-bf-delay, 0ms) backwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-hi-magic="shine-band"], [data-hi-magic="beam-dot"],
+  [data-hi-magic="gradient-text"], [data-hi-magic="blur-fade"] {
+    animation: none !important;
+  }
+  /* 빔 정지 → 잔상 대신 정적 accent 링으로 폴백 */
+  [data-hi-magic="border-beam"] {
+    border-color: var(--hi-beam-to, #0F7A4C);
+  }
+}</style><style id="react-native-stylesheet">[stylesheet-group="0"]{}
 body{margin:0;}
 button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0;}
 html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:rgba(0,0,0,0);}
@@ -152,6 +226,8 @@ input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-web
 .r-15zivkp{margin-bottom:4px;}
 .r-16dba41{font-weight:400;}
 .r-16eto9q{width:12px;}
+.r-16koqjr{bottom:-50%;}
+.r-16krg75{letter-spacing:-1px;}
 .r-16lk18l{margin-bottom:48px;}
 .r-16wqof{padding-bottom:48px;}
 .r-16y2uox{flex-grow:1;}
@@ -268,6 +344,7 @@ input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-web
 .r-1t7uo4s{object-fit:cover;}
 .r-1tlso52{color:rgba(27,29,26,1.00);}
 .r-1u8kdu{bottom:24px;}
+.r-1ubobe0{top:-50%;}
 .r-1udbk01{text-overflow:ellipsis;}
 .r-1ugchlj{height:44px;}
 .r-1ui5ee8{font-size:32px;}
@@ -338,6 +415,7 @@ input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-web
 .r-aruset{font-weight:200;}
 .r-b88u0q{font-weight:700;}
 .r-bi4vy9{transform:translateY(100%);}
+.r-bnwqim{position:relative;}
 .r-bt1l66{min-height:20px;}
 .r-buy8e9{overflow-y:hidden;}
 .r-bv2aro{padding-left:env(safe-area-inset-left);}
@@ -366,6 +444,7 @@ input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-web
 .r-h20szi{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR","Apple SD Gothic Neo",sans-serif;}
 .r-h3s6tt{height:48px;}
 .r-h7ip80{color:rgba(180,83,9,1.00);}
+.r-hvns9x{max-width:400px;}
 .r-hxflta{padding-right:env(safe-area-inset-right);}
 .r-icoktb{opacity:0.5;}
 .r-ifefl9{min-height:0px;}
@@ -454,5 +533,5 @@ input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-web
 @keyframes r-1pzkwqh{0%{transform:translateY(100%);}100%{transform:translateY(0%);}}
 @keyframes r-imtty0{0%{opacity:0;}100%{opacity:1;}}
 @keyframes r-q67da2{0%{transform:translateX(-100%);}100%{transform:translateX(400%);}}
-@keyframes r-t2lo5v{0%{opacity:1;}100%{opacity:0;}}</style><link rel="icon" href="/favicon.ico"/><script type="module">globalThis.__EXPO_ROUTER_HYDRATE__=true;</script></head><body><div id="root"><div class="css-g5y9jx r-13awgt0"><!--$--><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx" style="flex:1;background-color:rgba(255,255,255,1.00)" id="web-safe-shell"><div class="css-g5y9jx r-14lw9ot r-13awgt0"><div style="position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;visibility:hidden"></div><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx r-13awgt0 r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af" style="background-color:rgba(242,242,242,1.00);display:flex"><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx r-13awgt0" style="background-color:rgba(255,255,255,1.00)"><!--$--><div style="position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;visibility:hidden"></div><div class="css-g5y9jx r-13awgt0" style="flex-direction:column"><div class="css-g5y9jx r-13awgt0 r-1udh08x"><div class="css-g5y9jx r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af" style="z-index:0"><div class="css-g5y9jx r-13awgt0" style="background-color:rgba(242,242,242,1.00)"><div class="css-g5y9jx r-13awgt0"><!--$--><div aria-live="polite" class="css-g5y9jx r-1awozwy r-14lw9ot r-13awgt0 r-f4gmv6 r-1777fci"><div aria-label="불러오는 중" role="progressbar" aria-valuemax="1" aria-valuemin="0" class="css-g5y9jx r-1awozwy r-1777fci"><div class="css-g5y9jx r-z80fyv r-19wmn03 r-17bb2tj r-1muvv40 r-1yef0xd r-1ldzwu0"><svg height="100%" viewBox="0 0 32 32" width="100%"><circle cx="16" cy="16" fill="none" r="14" stroke-width="4" style="stroke:#1976D2;opacity:0.2"></circle><circle cx="16" cy="16" fill="none" r="14" stroke-width="4" style="stroke:#1976D2;stroke-dasharray:80;stroke-dashoffset:60"></circle></svg></div></div></div><!--/$--></div></div></div></div><div class="css-g5y9jx r-1p0dtai r-zchlnj r-1d2f490 r-14lw9ot r-1q6h16v r-15i92mo" style="pointer-events:auto;border-top-width:1px;border-top-color:rgba(216,216,216,1.00);border-right-color:rgba(216,216,216,1.00);border-bottom-color:rgba(216,216,216,1.00);border-left-color:rgba(216,216,216,1.00);padding-bottom:0px;padding-top:0px;padding-right:0px;padding-left:0px;height:58px;width:100%;max-width:720px;align-self:center;transform:translateY(0px)"><div class="css-g5y9jx r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af r-633pao"></div><div role="tablist" class="css-g5y9jx r-13awgt0 r-18u37iz"><div class="css-g5y9jx r-13awgt0 r-peo1c" style="border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;overflow-x:visible;overflow-y:visible"><a href="/home" role="tab" aria-selected="true" tabindex="0" class="css-g5y9jx r-1otgn73 r-1awozwy r-1onu96p r-eqz5dr r-1h0z5md r-1uu6nss" style="cursor:pointer;flex:1;background-color:rgba(0,0,0,0.00);border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;opacity:1"><div class="css-g5y9jx r-h0d30l r-726pan"><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:1;min-width:25px"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#0F7A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 20.5 H3.5 V11 L12 2.5 L20.5 11 V20.5"></path></svg></div><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:0"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9A9D92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 20.5 H3.5 V11 L12 2.5 L20.5 11 V20.5"></path></svg></div></div><div dir="auto" class="css-146c3p1 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-1niwhzg r-q4m81j r-h20szi r-1b43r93 r-1kfrs79" style="color:rgba(15,122,76,1.00)">홈</div></a></div><div class="css-g5y9jx r-13awgt0 r-peo1c" style="border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;overflow-x:visible;overflow-y:visible"><a href="/inventory" role="tab" aria-selected="false" tabindex="0" class="css-g5y9jx r-1otgn73 r-1awozwy r-1onu96p r-eqz5dr r-1h0z5md r-1uu6nss" style="cursor:pointer;flex:1;background-color:rgba(0,0,0,0.00);border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;opacity:1"><div class="css-g5y9jx r-h0d30l r-726pan"><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:0;min-width:25px"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#0F7A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 3.5 H20.5 V9.5 H3.5 Z M4.5 9.5 V20.5 H19.5 V9.5"></path></svg></div><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:1"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9A9D92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 3.5 H20.5 V9.5 H3.5 Z M4.5 9.5 V20.5 H19.5 V9.5"></path></svg></div></div><div dir="auto" class="css-146c3p1 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-1niwhzg r-q4m81j r-h20szi r-1b43r93 r-1kfrs79" style="color:rgba(154,157,146,1.00)">재고</div></a></div><div class="css-g5y9jx r-13awgt0 r-peo1c" style="border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;overflow-x:visible;overflow-y:visible"><a href="/shopping" role="tab" aria-selected="false" tabindex="0" class="css-g5y9jx r-1otgn73 r-1awozwy r-1onu96p r-eqz5dr r-1h0z5md r-1uu6nss" style="cursor:pointer;flex:1;background-color:rgba(0,0,0,0.00);border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;opacity:1"><div class="css-g5y9jx r-h0d30l r-726pan"><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:0;min-width:25px"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#0F7A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5 H5.5 V15 H20.5 V5.5 H9.5"></path><circle cx="10.25" cy="19" r="1.8" fill="#0F7A4C" stroke="none"></circle><circle cx="16.25" cy="19" r="1.8" fill="#0F7A4C" stroke="none"></circle></svg></div><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:1"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9A9D92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5 H5.5 V15 H20.5 V5.5 H9.5"></path><circle cx="10.25" cy="19" r="1.8" fill="#9A9D92" stroke="none"></circle><circle cx="16.25" cy="19" r="1.8" fill="#9A9D92" stroke="none"></circle></svg></div></div><div dir="auto" class="css-146c3p1 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-1niwhzg r-q4m81j r-h20szi r-1b43r93 r-1kfrs79" style="color:rgba(154,157,146,1.00)">장보기</div></a></div></div></div></div><!--/$--></div></div></div></div></div></div></div><!--/$--></div></div><script src="/_expo/static/js/web/entry-fc865f24fd859bacdd4a4472801f8147.js" defer></script>
+@keyframes r-t2lo5v{0%{opacity:1;}100%{opacity:0;}}</style><link rel="icon" href="/favicon.ico"/><script type="module">globalThis.__EXPO_ROUTER_HYDRATE__=true;</script></head><body><div id="root"><div class="css-g5y9jx r-13awgt0"><!--$--><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx" style="flex:1;background-color:rgba(255,255,255,1.00)" id="web-safe-shell"><div class="css-g5y9jx r-14lw9ot r-13awgt0"><div style="position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;visibility:hidden"></div><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx r-13awgt0 r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af" style="background-color:rgba(242,242,242,1.00);display:flex"><div class="css-g5y9jx r-13awgt0"><div class="css-g5y9jx r-13awgt0" style="background-color:rgba(255,255,255,1.00)"><!--$--><div style="position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;visibility:hidden"></div><div class="css-g5y9jx r-13awgt0" style="flex-direction:column"><div class="css-g5y9jx r-13awgt0 r-1udh08x"><div class="css-g5y9jx r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af" style="z-index:0"><div class="css-g5y9jx r-13awgt0" style="background-color:rgba(242,242,242,1.00)"><div class="css-g5y9jx r-13awgt0"><!--$--><div aria-live="polite" class="css-g5y9jx r-1awozwy r-14lw9ot r-13awgt0 r-f4gmv6 r-1777fci"><div aria-label="불러오는 중" role="progressbar" aria-valuemax="1" aria-valuemin="0" class="css-g5y9jx r-1awozwy r-1777fci"><div class="css-g5y9jx r-z80fyv r-19wmn03 r-17bb2tj r-1muvv40 r-1yef0xd r-1ldzwu0"><svg height="100%" viewBox="0 0 32 32" width="100%"><circle cx="16" cy="16" fill="none" r="14" stroke-width="4" style="stroke:#1976D2;opacity:0.2"></circle><circle cx="16" cy="16" fill="none" r="14" stroke-width="4" style="stroke:#1976D2;stroke-dasharray:80;stroke-dashoffset:60"></circle></svg></div></div></div><!--/$--></div></div></div></div><div class="css-g5y9jx r-1p0dtai r-zchlnj r-1d2f490 r-14lw9ot r-1q6h16v r-15i92mo" style="pointer-events:auto;border-top-width:1px;border-top-color:rgba(216,216,216,1.00);border-right-color:rgba(216,216,216,1.00);border-bottom-color:rgba(216,216,216,1.00);border-left-color:rgba(216,216,216,1.00);padding-bottom:0px;padding-top:0px;padding-right:0px;padding-left:0px;height:58px;width:100%;max-width:720px;align-self:center;transform:translateY(0px)"><div class="css-g5y9jx r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af r-633pao"></div><div role="tablist" class="css-g5y9jx r-13awgt0 r-18u37iz"><div class="css-g5y9jx r-13awgt0 r-peo1c" style="border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;overflow-x:visible;overflow-y:visible"><a href="/home" role="tab" aria-selected="true" tabindex="0" class="css-g5y9jx r-1otgn73 r-1awozwy r-1onu96p r-eqz5dr r-1h0z5md r-1uu6nss" style="cursor:pointer;flex:1;background-color:rgba(0,0,0,0.00);border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;opacity:1"><div class="css-g5y9jx r-h0d30l r-726pan"><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:1;min-width:25px"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#0F7A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 20.5 H3.5 V11 L12 2.5 L20.5 11 V20.5"></path></svg></div><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:0"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9A9D92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 20.5 H3.5 V11 L12 2.5 L20.5 11 V20.5"></path></svg></div></div><div dir="auto" class="css-146c3p1 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-1niwhzg r-q4m81j r-h20szi r-1b43r93 r-1kfrs79" style="color:rgba(15,122,76,1.00)">홈</div></a></div><div class="css-g5y9jx r-13awgt0 r-peo1c" style="border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;overflow-x:visible;overflow-y:visible"><a href="/inventory" role="tab" aria-selected="false" tabindex="0" class="css-g5y9jx r-1otgn73 r-1awozwy r-1onu96p r-eqz5dr r-1h0z5md r-1uu6nss" style="cursor:pointer;flex:1;background-color:rgba(0,0,0,0.00);border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;opacity:1"><div class="css-g5y9jx r-h0d30l r-726pan"><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:0;min-width:25px"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#0F7A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 3.5 H20.5 V9.5 H3.5 Z M4.5 9.5 V20.5 H19.5 V9.5"></path></svg></div><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:1"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9A9D92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 3.5 H20.5 V9.5 H3.5 Z M4.5 9.5 V20.5 H19.5 V9.5"></path></svg></div></div><div dir="auto" class="css-146c3p1 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-1niwhzg r-q4m81j r-h20szi r-1b43r93 r-1kfrs79" style="color:rgba(154,157,146,1.00)">재고</div></a></div><div class="css-g5y9jx r-13awgt0 r-peo1c" style="border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;overflow-x:visible;overflow-y:visible"><a href="/shopping" role="tab" aria-selected="false" tabindex="0" class="css-g5y9jx r-1otgn73 r-1awozwy r-1onu96p r-eqz5dr r-1h0z5md r-1uu6nss" style="cursor:pointer;flex:1;background-color:rgba(0,0,0,0.00);border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:0px;opacity:1"><div class="css-g5y9jx r-h0d30l r-726pan"><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:0;min-width:25px"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#0F7A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5 H5.5 V15 H20.5 V5.5 H9.5"></path><circle cx="10.25" cy="19" r="1.8" fill="#0F7A4C" stroke="none"></circle><circle cx="16.25" cy="19" r="1.8" fill="#0F7A4C" stroke="none"></circle></svg></div><div class="css-g5y9jx r-1awozwy r-1kihuf0 r-1pi2tsx r-1777fci r-u8s1d r-13qz1uu" style="opacity:1"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9A9D92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5 H5.5 V15 H20.5 V5.5 H9.5"></path><circle cx="10.25" cy="19" r="1.8" fill="#9A9D92" stroke="none"></circle><circle cx="16.25" cy="19" r="1.8" fill="#9A9D92" stroke="none"></circle></svg></div></div><div dir="auto" class="css-146c3p1 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-1niwhzg r-q4m81j r-h20szi r-1b43r93 r-1kfrs79" style="color:rgba(154,157,146,1.00)">장보기</div></a></div></div></div></div><!--/$--></div></div></div></div></div></div></div><!--/$--></div></div><script src="/_expo/static/js/web/entry-03f4b232fba7a5c0874da821d8ba99d4.js" defer></script>
 </body></html>
