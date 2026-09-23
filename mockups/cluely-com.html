@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>우리집 — cluely-com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dominant:#369adf;
+    --surface:#073a8b;
+    --ink:#83caec;
+    --support:#588ca4;
+    --detail:#dad4c3;
+    --bg:#04102b;
+    --txt:#eef7ff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html,body{height:100%}
+  body{
+    display:grid;place-items:center;
+    background:#020610;
+    font-family:"Geist","Geist Fallback",-apple-system,ui-sans-serif,sans-serif;
+    color:var(--txt);
+  }
+  .frame{
+    width:390px;height:844px;position:relative;overflow:hidden;
+    background:
+      radial-gradient(140% 60% at 18% -8%, rgba(7,58,139,.95) 0%, rgba(7,58,139,0) 62%),
+      radial-gradient(90% 50% at 92% 22%, rgba(54,154,223,.30) 0%, rgba(54,154,223,0) 60%),
+      radial-gradient(120% 60% at 50% 118%, rgba(7,58,139,.55) 0%, rgba(7,58,139,0) 55%),
+      var(--bg);
+  }
+  .frame::before{ /* hairline space-grid */
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(131,202,236,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(131,202,236,.045) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(120% 80% at 50% 0%, #000 30%, transparent 85%);
+    -webkit-mask-image:radial-gradient(120% 80% at 50% 0%, #000 30%, transparent 85%);
+  }
+  .frame::after{ /* grain */
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .screen{position:relative;z-index:1;height:100%;display:flex;flex-direction:column}
+
+  /* ── status bar ── */
+  .statusbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 28px 0;font-size:14px;font-weight:600;letter-spacing:.2px;
+  }
+  .statusbar .icons{display:flex;gap:6px;align-items:center;color:var(--txt)}
+
+  /* ── header ── */
+  header{padding:8px 24px 0;display:flex;align-items:flex-end;justify-content:space-between}
+  .eyebrow{
+    font-size:10px;font-weight:600;letter-spacing:2.4px;color:var(--support);
+    text-transform:uppercase;margin-bottom:4px;
+  }
+  h1{
+    font-family:"EB Garamond","AppleMyungjo",serif;
+    font-size:30px;font-weight:600;line-height:.96;letter-spacing:-.5px;
+    color:var(--txt);
+  }
+  h1 em{font-style:italic;color:var(--ink)}
+  .navlinks{display:flex;gap:16px;padding-bottom:6px}
+  .navlinks a{font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;opacity:.85}
+
+  /* ── glass CTA card ── */
+  .cta{
+    margin:12px 20px 0;padding:8px;border-radius:22px;
+    background:linear-gradient(160deg, rgba(131,202,236,.12), rgba(131,202,236,.04));
+    border:1px solid rgba(131,202,236,.22);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    box-shadow:0 18px 40px -18px rgba(3,16,40,.9), inset 0 1px 0 rgba(238,247,255,.14);
+    display:flex;gap:10px;
+  }
+  .btn{
+    flex:1;height:44px;border-radius:15px;border:0;cursor:pointer;
+    font-family:inherit;font-size:15px;font-weight:600;letter-spacing:-.13px;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--dominant) 0%,var(--ink) 130%);
+    color:#04132e;
+    box-shadow:0 10px 26px -10px rgba(54,154,223,.65), inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .btn-ghost{
+    background:rgba(131,202,236,.07);color:var(--ink);
+    border:1px solid rgba(131,202,236,.30);
+  }
+  .btn svg{flex:none}
+
+  main{flex:1;padding:12px 20px 0;display:flex;flex-direction:column;gap:10px;min-height:0}
+  section{min-height:0}
+  .sec-head{
+    display:flex;align-items:baseline;gap:8px;margin-bottom:5px;padding:0 4px;
+  }
+  .sec-title{
+    font-size:12px;font-weight:600;letter-spacing:1.6px;color:var(--support);
+    text-transform:uppercase;
+  }
+  .sec-count{
+    font-family:"EB Garamond",serif;font-style:italic;font-weight:600;
+    font-size:17px;color:var(--ink);line-height:1;
+  }
+  .sec-action{margin-left:auto;font-size:13px;font-weight:500;color:var(--ink);opacity:.8}
+
+  .card{
+    border-radius:20px;overflow:hidden;
+    background:linear-gradient(170deg, rgba(131,202,236,.08), rgba(131,202,236,.02));
+    border:1px solid rgba(131,202,236,.16);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  }
+  .row{
+    display:flex;align-items:center;gap:12px;padding:7px 16px;
+  }
+  .row.slim{padding-top:8px;padding-bottom:8px}
+  .row + .row{border-top:1px solid rgba(131,202,236,.10)}
+  .row .name{font-size:15px;font-weight:500;letter-spacing:-.1px}
+  .row .sub{font-size:12px;color:var(--support);margin-top:1px}
+  .row .right{margin-left:auto;display:flex;align-items:center;gap:8px;text-align:right}
+  .qty{font-size:15px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+  .qty.zero{color:#ff9d8a}
+  .meta{font-size:12px;color:var(--support)}
+  .meta.warn{color:#ffc38f}
+
+  .dchip{
+    font-family:"EB Garamond",serif;font-style:italic;font-weight:600;font-size:14px;
+    padding:3px 9px;border-radius:999px;line-height:1.2;
+    border:1px solid rgba(131,202,236,.35);color:var(--ink);
+    background:rgba(131,202,236,.10);
+  }
+  .dchip.hot{color:#ffc38f;border-color:rgba(255,195,143,.45);background:rgba(255,157,138,.10)}
+
+  .stepper{display:flex;align-items:center;gap:2px}
+  .stepper button{
+    width:26px;height:26px;border-radius:999px;cursor:pointer;
+    border:1px solid rgba(131,202,236,.30);background:rgba(131,202,236,.06);
+    color:var(--ink);font-size:15px;font-weight:500;line-height:1;
+    display:grid;place-items:center;font-family:inherit;
+  }
+  .stepper .val{
+    min-width:26px;text-align:center;font-size:15px;font-weight:600;
+    color:var(--txt);font-variant-numeric:tabular-nums;
+  }
+
+  .search{
+    display:flex;align-items:center;gap:8px;margin:0 0 6px;
+    padding:0 14px;height:32px;border-radius:14px;
+    background:rgba(131,202,236,.06);border:1px solid rgba(131,202,236,.16);
+    color:var(--support);font-size:13px;
+  }
+  .chips{display:flex;gap:6px;margin-bottom:6px}
+  .chip{
+    font-size:12px;font-weight:500;padding:5px 12px;border-radius:999px;
+    border:1px solid rgba(131,202,236,.22);color:var(--ink);
+    background:transparent;
+  }
+  .chip.on{background:var(--dominant);border-color:var(--dominant);color:#04132e;font-weight:600}
+  .more{
+    display:block;text-align:center;font-size:12px;font-weight:500;color:var(--ink);
+    padding:5px 0 0;opacity:.8;
+  }
+
+  /* ── tab bar ── */
+  .tabbar{
+    position:absolute;left:16px;right:16px;bottom:10px;z-index:2;
+    height:58px;border-radius:20px;
+    background:rgba(6,26,58,.72);
+    border:1px solid rgba(131,202,236,.20);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    box-shadow:0 16px 40px -14px rgba(2,8,20,.9);
+    display:flex;
+  }
+  .tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:4px;color:var(--support);font-size:11px;font-weight:500;
+  }
+  .tab.on{color:var(--ink)}
+  .tab.on .dot{
+    width:4px;height:4px;border-radius:999px;background:var(--dominant);
+    box-shadow:0 0 8px 1px rgba(54,154,223,.9);
+  }
+  .tab .dot{width:4px;height:4px}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="screen">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+        <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 9.6a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8zM8 6c-1.7 0-3.2.7-4.3 1.8l1.4 1.4A4.2 4.2 0 0 1 8 8c1.1 0 2.1.4 2.9 1.2l1.4-1.4A5.9 5.9 0 0 0 8 6zM8 1.5C5 1.5 2.3 2.7.3 4.7l1.4 1.4A8.9 8.9 0 0 1 8 3.5c2.5 0 4.7 1 6.3 2.6l1.4-1.4A11 11 0 0 0 8 1.5z" transform="translate(0 -1.5)"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/><path d="M23.5 4v4a2 2 0 0 0 0-4z" fill="currentColor" opacity=".5"/></svg>
+      </span>
+    </div>
+
+    <header>
+      <div>
+        <div class="eyebrow">Home Inventory</div>
+        <h1>우리<em>집</em></h1>
+      </div>
+      <nav class="navlinks">
+        <a href="#">가족</a>
+        <a href="#">설정</a>
+      </nav>
+    </header>
+
+    <div class="cta">
+      <button class="btn btn-primary">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 9v6M11 9v6M14 9v6M17 9v6" stroke-width="1.6"/></svg>
+        스캔해서 추가
+      </button>
+      <button class="btn btn-ghost">바로 사용</button>
+    </div>
+
+    <main>
+      <section>
+        <div class="sec-head">
+          <span class="sec-title">구매 필요</span>
+          <span class="sec-count">2</span>
+          <span class="sec-action">장보기 →</span>
+        </div>
+        <div class="card">
+          <div class="row">
+            <div><div class="name">두부</div><div class="sub">150g · 팬트리</div></div>
+            <div class="right"><span class="qty zero">0개</span><span class="meta warn">최소 2개</span></div>
+          </div>
+          <div class="row">
+            <div><div class="name">물티슈</div><div class="sub">80매</div></div>
+            <div class="right"><span class="qty">1개</span><span class="meta warn">최소 2개</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head">
+          <span class="sec-title">유통기한 임박</span>
+          <span class="sec-count">2</span>
+        </div>
+        <div class="card">
+          <div class="row">
+            <div><div class="name">우유</div><div class="sub">1L · 냉장고 · 09/24</div></div>
+            <div class="right"><span class="dchip hot">D-1</span><span class="qty">1개</span></div>
+          </div>
+          <div class="row">
+            <div><div class="name">요거트</div><div class="sub">4입 · 냉장고 · 09/25</div></div>
+            <div class="right"><span class="dchip hot">D-2</span><span class="qty">2개</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head">
+          <span class="sec-title">최근 사용</span>
+          <span class="sec-count">2</span>
+        </div>
+        <div class="card">
+          <div class="row">
+            <div><div class="name">계란</div><div class="sub">10구 · 냉장고</div></div>
+            <div class="right stepper"><button>−</button><span class="val">8</span><button>＋</button></div>
+          </div>
+          <div class="row">
+            <div><div class="name">라면</div><div class="sub">5입 · 팬트리</div></div>
+            <div class="right stepper"><button>−</button><span class="val">4</span><button>＋</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head">
+          <span class="sec-title">전체 재고</span>
+          <span class="sec-count">24</span>
+        </div>
+        <div class="search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          상품명·브랜드 검색
+        </div>
+        <div class="chips">
+          <span class="chip on">전체</span>
+          <span class="chip">냉장고</span>
+          <span class="chip">냉동고</span>
+          <span class="chip">팬트리</span>
+        </div>
+        <div class="card">
+          <div class="row slim">
+            <div class="name">양파</div>
+            <div class="right"><span class="meta">1망 · 팬트리</span><span class="qty">6개</span></div>
+          </div>
+          <div class="row slim">
+            <div class="name">햇반</div>
+            <div class="right"><span class="meta">210g × 12</span><span class="qty">12개</span></div>
+          </div>
+        </div>
+        <span class="more">더 보기 · 24개</span>
+      </section>
+    </main>
+  </div>
+
+  <nav class="tabbar">
+    <div class="tab on">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+      홈<span class="dot"></span>
+    </div>
+    <div class="tab">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.5 12 3 3 8.5v7L12 21l9-5.5v-7Z"/><path d="M3 8.5 12 14l9-5.5M12 14v7"/></svg>
+      재고<span class="dot"></span>
+    </div>
+    <div class="tab">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 4h2.4l2.2 11h10.6l1.8-8H6.2"/></svg>
+      장보기<span class="dot"></span>
+    </div>
+  </nav>
+</div>
+</body>
+</html>

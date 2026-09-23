@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>home-inventory — 디자인 목업 갤러리</title>
+<style>
+  body { margin:0; font-family:-apple-system,'Noto Sans KR',sans-serif; background:#f4f4f2; color:#1b1d1a; }
+  header { padding:32px 24px 16px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  p.sub { margin:0; color:#666; font-size:14px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(430px,1fr)); gap:28px; padding:24px; }
+  .card { background:#fff; border:1px solid #e2e2de; border-radius:14px; overflow:hidden; }
+  .card h2 { font-size:15px; margin:0; padding:14px 16px 4px; }
+  .card .note { font-size:13px; color:#555; padding:0 16px 12px; margin:0; line-height:1.5; }
+  .card iframe { width:390px; height:844px; border:0; display:block; margin:0 auto 16px; background:#fff; box-shadow:0 8px 28px rgba(0,0,0,.10); border-radius:24px; }
+  .card .links { padding:0 16px 16px; font-size:13px; }
+  .card a { color:#0F7A4C; margin-right:12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>home-inventory — 홈 화면 디자인 목업 ×8</h1>
+  <p class="sub">각 카드 안의 폰 프레임이 라이브 HTML 목업입니다. 클릭하면 해당 목업만 크게 볼 수 있습니다.</p>
+</header>
+<div class="grid" id="grid"></div>
+<script>
+const designs = [
+  ['cluely-com','Cluely','딥 인디고 다크 + 스카이블루 그래디언트 + 세리프 디스플레이 + 글래스 패널'],
+  ['ghost-org','Ghost','차콜 대시보드 + 라임 accent + stat strip + uppercase 라벨'],
+  ['alma-food','Alma','웜 크림 + 모스 그린 + 세리프 + pill 라운드 + 오가닉 웰니스'],
+  ['netlify-com','Netlify','딥 차콜-틸 다크 + teal·apricot + 모노 메타 + 글래스 카드 스택'],
+  ['tokens-studio','Tokens Studio','오프화이트 + 딥 인디고 잉크 + 시안 그래디언트 + 파스텔 캔디 블록'],
+  ['duolingo-com','Duolingo','순백 + 그린 3D 푸시버튼 + 고채도 + 둥근 Nunito + 게임적 캐주얼'],
+  ['craft-do','Craft','오프화이트 에디토리얼 + 세리프 타이틀 + 앰버 포인트 + 파스텔 태그'],
+  ['codecademy-com','Codecademy','네이비 다크 + 옐로우 CTA + 박시 4px + 하드 오프셋 섀도'],
+];
+document.getElementById('grid').innerHTML = designs.map(([slug,name,note]) => `
+  <div class="card">
+    <h2>${name}</h2>
+    <p class="note">${note}</p>
+    <iframe src="${slug}.html" loading="lazy" title="${name}"></iframe>
+    <div class="links"><a href="${slug}.html" target="_blank">크게 보기</a><a href="${slug}-m.png" target="_blank">스크린샷 PNG</a></div>
+  </div>`).join('');
+</script>
+</body>
+</html>

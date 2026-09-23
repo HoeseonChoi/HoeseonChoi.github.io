@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>우리집 — ghost-org</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --base:#15171a;
+    --card:#1b1f22;
+    --card2:#1e2427;
+    --line:#2a3134;
+    --darkgrey:#343f44;
+    --wash:#f1f2f3;
+    --midgrey:#738a94;
+    --detail:#c1c6c5;
+    --sage:#7c8c84;
+    --lime:#d1ff19;
+    --teal:#009c7e;
+    --yellow:#ffd400;
+    --amber:#f5bd33;
+    --amber-surface:#72561a;
+    --amber-ink:#fcdc94;
+    --red:#f05230;
+    --green:#5dcf1f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html,body{height:100%}
+  body{
+    display:grid;place-items:center;background:#0b0d0e;
+    font-family:"Inter","InterVariable",-apple-system,ui-sans-serif,sans-serif;
+    color:var(--wash);
+  }
+  .frame{
+    width:390px;height:844px;position:relative;overflow:hidden;
+    background:var(--base);
+  }
+  .frame::before{ /* faint top glow, dashboard vibe */
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(90% 34% at 50% -12%, rgba(209,255,25,.07) 0%, rgba(209,255,25,0) 70%);
+  }
+  .screen{position:relative;z-index:1;height:100%;display:flex;flex-direction:column}
+
+  .statusbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:12px 28px 0;font-size:14px;font-weight:600;letter-spacing:.2px;
+  }
+  .statusbar .icons{display:flex;gap:6px;align-items:center}
+
+  header{
+    padding:8px 20px 0;display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:9px}
+  .brand .mark{
+    width:22px;height:22px;border-radius:6px;background:var(--lime);
+    display:grid;place-items:center;color:#15171a;
+  }
+  h1{
+    font-family:"Inter Tight","Inter",sans-serif;
+    font-size:24px;font-weight:700;letter-spacing:-.6px;color:var(--wash);
+  }
+  .navlinks{display:flex;gap:14px}
+  .navlinks a{font-size:13px;font-weight:500;color:var(--midgrey);text-decoration:none}
+
+  /* ── stat strip (Ghost signature) ── */
+  .stats{
+    margin:8px 16px 0;padding:8px 6px 7px;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    display:flex;align-items:center;
+  }
+  .stat{flex:1;text-align:center;position:relative}
+  .stat + .stat::before{
+    content:"";position:absolute;left:0;top:15%;bottom:15%;width:1px;background:var(--line);
+  }
+  .stat .n{
+    font-family:"Inter Tight",sans-serif;font-size:19px;font-weight:700;
+    letter-spacing:-.5px;font-variant-numeric:tabular-nums;
+  }
+  .stat .n.amber{color:var(--amber)}
+  .stat .n.lime{color:var(--lime)}
+  .stat .l{
+    margin-top:2px;font-size:10px;font-weight:700;letter-spacing:1.2px;
+    text-transform:uppercase;color:var(--midgrey);
+  }
+  .spark{
+    position:absolute;right:10px;top:10px;opacity:.8;
+  }
+
+  /* ── quick actions ── */
+  .cta{margin:10px 16px 0;display:flex;gap:8px}
+  .btn{
+    flex:1;height:42px;border-radius:10px;border:0;cursor:pointer;
+    font-family:inherit;font-size:15px;font-weight:600;letter-spacing:-.1px;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .btn-primary{
+    background:var(--lime);color:#15171a;
+    box-shadow:0 8px 22px -10px rgba(209,255,25,.45);
+  }
+  .btn-secondary{
+    background:var(--card2);color:var(--wash);
+    border:1px solid var(--darkgrey);
+  }
+
+  main{flex:1;padding:10px 16px 0;display:flex;flex-direction:column;gap:9px;min-height:0}
+  .sec-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;padding:0 2px}
+  .sec-title{
+    font-size:11px;font-weight:700;letter-spacing:1.4px;
+    text-transform:uppercase;color:var(--sage);
+  }
+  .sec-count{
+    font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;
+    background:var(--darkgrey);color:var(--detail);font-variant-numeric:tabular-nums;
+  }
+  .sec-count.amber{background:var(--amber-surface);color:var(--amber-ink)}
+  .sec-action{margin-left:auto;font-size:12px;font-weight:600;color:var(--lime)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .row{display:flex;align-items:center;gap:12px;padding:5px 14px}
+  .row.slim{padding-top:6px;padding-bottom:6px}
+  .row + .row{border-top:1px solid var(--line)}
+  .row .name{font-size:14px;font-weight:600;letter-spacing:-.1px}
+  .row .sub{font-size:12px;color:var(--midgrey);margin-top:1px}
+  .row .right{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .qty{font-size:14px;font-weight:700;color:var(--detail);font-variant-numeric:tabular-nums}
+  .qty.zero{color:var(--red)}
+  .meta{font-size:11px;font-weight:600;color:var(--midgrey)}
+  .meta.warn{color:var(--amber)}
+
+  .dchip{
+    font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;
+    font-variant-numeric:tabular-nums;letter-spacing:.2px;
+    background:var(--amber-surface);color:var(--amber-ink);
+  }
+  .dchip.hot{background:rgba(240,82,48,.18);color:#ff8a70}
+
+  .stepper{display:flex;align-items:center;gap:3px}
+  .stepper button{
+    width:25px;height:25px;border-radius:7px;cursor:pointer;
+    border:1px solid var(--darkgrey);background:var(--card2);
+    color:var(--detail);font-size:14px;font-weight:600;line-height:1;
+    display:grid;place-items:center;font-family:inherit;
+  }
+  .stepper .val{
+    min-width:24px;text-align:center;font-size:14px;font-weight:700;
+    color:var(--wash);font-variant-numeric:tabular-nums;
+  }
+
+  .search{
+    display:flex;align-items:center;gap:8px;margin-bottom:6px;
+    padding:0 12px;height:30px;border-radius:9px;
+    background:var(--card);border:1px solid var(--line);
+    color:var(--midgrey);font-size:13px;
+  }
+  .chips{display:flex;gap:6px;margin-bottom:6px}
+  .chip{
+    font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;
+    border:1px solid var(--darkgrey);color:var(--detail);background:var(--card);
+  }
+  .chip.on{background:var(--lime);border-color:var(--lime);color:#15171a}
+  .more{
+    display:block;text-align:center;font-size:12px;font-weight:600;color:var(--lime);
+    padding:5px 0 0;
+  }
+
+  .tabbar{
+    position:absolute;left:0;right:0;bottom:0;z-index:2;
+    height:58px;background:#101315;border-top:1px solid #262b2e;
+    display:flex;padding-bottom:8px;
+  }
+  .tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:4px;color:var(--midgrey);font-size:11px;font-weight:600;
+  }
+  .tab.on{color:var(--lime)}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="screen">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+        <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 8.1a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8zM8 4.5c-1.7 0-3.2.7-4.3 1.8l1.4 1.4A4.2 4.2 0 0 1 8 6.5c1.1 0 2.1.4 2.9 1.2l1.4-1.4A5.9 5.9 0 0 0 8 4.5zM8 0C5 0 2.3 1.2.3 3.2l1.4 1.4A8.9 8.9 0 0 1 8 2c2.5 0 4.7 1 6.3 2.6l1.4-1.4A11 11 0 0 0 8 0z"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/><path d="M23.5 4v4a2 2 0 0 0 0-4z" fill="currentColor" opacity=".5"/></svg>
+      </span>
+    </div>
+
+    <header>
+      <div class="brand">
+        <span class="mark">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+        </span>
+        <h1>우리집</h1>
+      </div>
+      <nav class="navlinks">
+        <a href="#">가족</a>
+        <a href="#">설정</a>
+      </nav>
+    </header>
+
+    <div class="stats">
+      <svg class="spark" width="52" height="16" viewBox="0 0 52 16" fill="none">
+        <path d="M0 12 7 9l7 3 7-6 7 4 7-2 7-5 7 3" stroke="#009c7e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+        <path d="M0 15 7 13l7 2 7-3 7 2 7-1 7-3 7 1" stroke="#d1ff19" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>
+      </svg>
+      <div class="stat"><div class="n">24</div><div class="l">등록 상품</div></div>
+      <div class="stat"><div class="n amber">3</div><div class="l">구매 필요</div></div>
+      <div class="stat"><div class="n lime">3</div><div class="l">임박</div></div>
+    </div>
+
+    <div class="cta">
+      <button class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 9v6M11 9v6M14 9v6M17 9v6" stroke-width="1.6"/></svg>
+        스캔해서 추가
+      </button>
+      <button class="btn btn-secondary">바로 사용</button>
+    </div>
+
+    <main>
+      <section>
+        <div class="sec-head">
+          <span class="sec-title">구매 필요</span>
+          <span class="sec-count amber">3</span>
+          <span class="sec-action">장보기 →</span>
+        </div>
+        <div class="card">
+          <div class="row">
+            <div><div class="name">두부</div><div class="sub">150g · 팬트리</div></div>
+            <div class="right"><span class="qty zero">0개</span><span class="meta warn">최소 2개</span></div>
+          </div>
+          <div class="row">
+            <div><div class="name">물티슈</div><div class="sub">80매</div></div>
+            <div class="right"><span class="qty">1개</span><span class="meta warn">최소 2개</span></div>
+          </div>
+          <div class="row">
+            <div><div class="name">주방세제</div><div class="sub">500ml</div></div>
+            <div class="right"><span class="qty">1개</span><span class="meta warn">최소 2개</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head">
+          <span class="sec-title">유통기한 임박</span>
+          <span class="sec-count amber">2</span>
+        </div>
+        <div class="card">
+          <div class="row">
+            <div><div class="name">우유</div><div class="sub">1L · 냉장고 · 09/24</div></div>
+            <div class="right"><span class="dchip hot">D-1</span><span class="qty">1개</span></div>
+          </div>
+          <div class="row">
+            <div><div class="name">요거트</div><div class="sub">4입 · 냉장고 · 09/25</div></div>
+            <div class="right"><span class="dchip">D-2</span><span class="qty">2개</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head">
+          <span class="sec-title">최근 사용</span>
+          <span class="sec-count">2</span>
+        </div>
+        <div class="card">
+          <div class="row">
+            <div><div class="name">계란</div><div class="sub">10구 · 냉장고</div></div>
+            <div class="right stepper"><button>−</button><span class="val">8</span><button>＋</button></div>
+          </div>
+          <div class="row">
+            <div><div class="name">라면</div><div class="sub">5입 · 팬트리</div></div>
+            <div class="right stepper"><button>−</button><span class="val">4</span><button>＋</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head">
+          <span class="sec-title">전체 재고</span>
+          <span class="sec-count">24</span>
+        </div>
+        <div class="search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          상품명·브랜드 검색
+        </div>
+        <div class="chips">
+          <span class="chip on">전체</span>
+          <span class="chip">냉장고</span>
+          <span class="chip">냉동고</span>
+          <span class="chip">팬트리</span>
+        </div>
+        <div class="card">
+          <div class="row slim">
+            <div class="name">양파</div>
+            <div class="right"><span class="meta">1망 · 팬트리</span><span class="qty">6개</span></div>
+          </div>
+          <div class="row slim">
+            <div class="name">햇반</div>
+            <div class="right"><span class="meta">210g × 12</span><span class="qty">12개</span></div>
+          </div>
+        </div>
+        <span class="more">더 보기 · 24개</span>
+      </section>
+    </main>
+  </div>
+
+  <nav class="tabbar">
+    <div class="tab on">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+      홈
+    </div>
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.5 12 3 3 8.5v7L12 21l9-5.5v-7Z"/><path d="M3 8.5 12 14l9-5.5M12 14v7"/></svg>
+      재고
+    </div>
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 4h2.4l2.2 11h10.6l1.8-8H6.2"/></svg>
+      장보기
+    </div>
+  </nav>
+</div>
+</body>
+</html>

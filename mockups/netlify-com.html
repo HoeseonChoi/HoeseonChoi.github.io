@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리집 — Netlify style</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800;900&family=Instrument+Sans:wght@400;500;600&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#32e6e2;
+    --teal-dim:#267879;
+    --blue:#2e51ed;
+    --apricot:#fcbc54;
+    --amber:#f9b23b;
+    --sage:#64948c;
+    --grey:#b1b2b5;
+    --bg0:#0b1417;
+    --bg1:#101c20;
+    --card:rgba(255,255,255,.045);
+    --line:rgba(255,255,255,.09);
+    --ink:#f0f4f4;
+    --ink-2:#9fb0b3;
+    --display:"Figtree",system-ui,sans-serif;
+    --body:"Instrument Sans",system-ui,sans-serif;
+    --mono:"Martian Mono",monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html,body{height:100%}
+  body{background:#1c1e20;display:flex;align-items:center;justify-content:center;font-family:var(--body)}
+  .frame{
+    width:390px;height:844px;flex:none;border-radius:40px;overflow:hidden;position:relative;
+    background:
+      radial-gradient(90% 45% at 50% -10%, rgba(50,230,226,.14) 0%, transparent 60%),
+      radial-gradient(70% 35% at 100% 0%, rgba(46,81,237,.12) 0%, transparent 55%),
+      linear-gradient(180deg,var(--bg1),var(--bg0));
+    box-shadow:0 40px 80px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08);
+    display:flex;flex-direction:column;color:var(--ink);
+  }
+  /* faint grid backdrop */
+  .frame::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+    background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(80% 40% at 50% 0%,#000 0%,transparent 80%);
+    -webkit-mask-image:radial-gradient(80% 40% at 50% 0%,#000 0%,transparent 80%);
+  }
+  .scroll{flex:1;overflow:hidden;padding:0 20px;position:relative;z-index:1}
+
+  .status{display:flex;justify-content:space-between;align-items:center;
+    padding:8px 8px 0;font-size:12px;font-weight:600;color:var(--ink)}
+  .status .glyphs{display:flex;gap:5px;align-items:center;opacity:.9}
+
+  header{padding:5px 4px 8px}
+  .kicker{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--teal);
+    letter-spacing:.06em;margin-bottom:4px;display:flex;align-items:center;gap:7px}
+  .kicker::before{content:"";width:8px;height:8px;background:var(--teal);
+    clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+  .title-row{display:flex;align-items:flex-end;justify-content:space-between}
+  h1{font-family:var(--display);font-weight:800;font-size:25px;line-height:1.05;
+    letter-spacing:-.02em}
+  h1 .spark{color:var(--teal)}
+  .nav-links{display:flex;gap:14px;padding-bottom:5px}
+  .nav-links a{font-family:var(--mono);font-size:11px;color:var(--ink-2);text-decoration:none}
+  .nav-links a:hover{color:var(--teal)}
+
+  /* quick actions */
+  .cta{display:flex;gap:10px;margin-bottom:11px}
+  .btn{flex:1;height:42px;border:none;cursor:pointer;border-radius:30px;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    font-family:var(--display);font-size:13px;font-weight:600}
+  .btn-primary{background:var(--teal);color:#062e2d;
+    box-shadow:0 0 28px -6px rgba(50,230,226,.55), inset 0 0 0 1px rgba(255,255,255,.25)}
+  .btn-secondary{background:rgba(255,255,255,.05);color:var(--ink);
+    box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.18)}
+
+  /* sections — feature stack cards */
+  section{margin-bottom:7px}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;
+    padding:0 2px;margin-bottom:5px}
+  .sec-kicker{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.08em;
+    color:var(--sage);text-transform:uppercase}
+  .sec-title{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-.01em;
+    color:var(--ink);margin-top:2px}
+  .badge{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--teal);
+    border:1px solid rgba(50,230,226,.4);border-radius:50px;padding:3px 9px}
+  .badge.warn{color:var(--apricot);border-color:rgba(252,188,84,.45)}
+  .sec-link{font-family:var(--mono);font-size:10px;color:var(--ink-2);text-decoration:none;margin-left:8px}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    overflow:hidden;
+  }
+  .row{display:flex;align-items:center;gap:10px;padding:6px 13px}
+  .row + .row{border-top:1px solid rgba(255,255,255,.06)}
+  .dot{width:6px;height:6px;border-radius:50%;flex:none}
+  .dot.warn{background:var(--apricot);box-shadow:0 0 8px rgba(252,188,84,.7)}
+  .dot.ok{background:var(--teal);box-shadow:0 0 8px rgba(50,230,226,.6)}
+  .row-main{flex:1;min-width:0}
+  .row-name{font-size:13.5px;font-weight:600;color:var(--ink)}
+  .row-sub{font-family:var(--mono);font-size:9.5px;color:var(--ink-2);margin-top:2px}
+  .row-qty{font-family:var(--display);font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap}
+  .row-qty small{font-family:var(--mono);font-size:9.5px;font-weight:500;color:var(--ink-2)}
+  .qty-zero{color:var(--apricot)}
+
+  .chip{font-family:var(--mono);font-size:10px;font-weight:600;padding:4px 10px;
+    border-radius:50px;white-space:nowrap}
+  .chip-d1{background:rgba(252,188,84,.16);color:var(--apricot);border:1px solid rgba(252,188,84,.5)}
+  .chip-d2{background:rgba(50,230,226,.1);color:var(--teal);border:1px solid rgba(50,230,226,.35)}
+
+  .stepper{display:flex;align-items:center;gap:5px}
+  .step-btn{width:25px;height:25px;border-radius:7px;border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.04);color:var(--ink);font-size:13px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;line-height:1}
+  .step-btn.add{border-color:rgba(50,230,226,.5);color:var(--teal);background:rgba(50,230,226,.08)}
+  .stepper .qty{min-width:26px;text-align:center;font-family:var(--mono);font-size:12px;
+    font-weight:600;color:var(--ink)}
+
+  .search{
+    display:flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.05);border:1px solid var(--line);
+    border-radius:9px;padding:7px 13px;margin-bottom:6px;
+  }
+  .search input{border:none;background:transparent;outline:none;flex:1;
+    font-family:var(--body);font-size:12px;color:var(--ink)}
+  .search input::placeholder{color:var(--ink-2)}
+  .chips{display:flex;gap:5px;margin-bottom:6px}
+  .fchip{font-family:var(--mono);font-size:9.5px;font-weight:500;padding:4px 11px;
+    border-radius:50px;cursor:pointer;color:var(--ink-2);
+    border:1px solid rgba(255,255,255,.14);background:transparent}
+  .fchip.on{background:var(--teal);color:#062e2d;border-color:transparent;font-weight:600}
+  .more{display:block;text-align:center;font-family:var(--mono);font-size:10px;
+    color:var(--teal);padding:7px 0 2px;text-decoration:none}
+
+  /* tab bar */
+  .tabbar{
+    display:flex;justify-content:space-around;position:relative;z-index:1;
+    background:rgba(10,16,18,.92);border-top:1px solid var(--line);
+    padding:7px 20px 14px;
+    backdrop-filter:blur(12px);
+  }
+  .tab{display:flex;flex-direction:column;align-items:center;gap:3px;
+    color:var(--ink-2);cursor:pointer;padding:3px 18px}
+  .tab span{font-family:var(--mono);font-size:9.5px;font-weight:500}
+  .tab.active{color:var(--teal)}
+  .tab.active .ind{width:14px;height:2px;border-radius:2px;background:var(--teal);
+    box-shadow:0 0 8px var(--teal)}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="scroll">
+    <div class="status">
+      <span>9:41</span>
+      <span class="glyphs">
+        <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="4.5" width="3" height="6.5" rx="1"/><rect x="9" y="2" width="3" height="9" rx="1"/><rect x="13" y="0" width="3" height="11" rx="1" opacity=".35"/></svg>
+        <svg width="24" height="11" viewBox="0 0 24 11" fill="none" stroke="currentColor"><rect x="0.5" y="0.5" width="20" height="10" rx="3"/><rect x="2.5" y="2.5" width="14" height="6" rx="1.5" fill="currentColor" stroke="none"/><path d="M22.5 3.5v4" stroke-linecap="round"/></svg>
+      </span>
+    </div>
+
+    <header>
+      <div class="kicker">~/home — inventory.deployed</div>
+      <div class="title-row">
+        <h1>우리집<span class="spark">_</span></h1>
+        <nav class="nav-links"><a href="#">가족</a><a href="#">설정</a></nav>
+      </div>
+    </header>
+
+    <div class="cta">
+      <button class="btn btn-primary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2M4 12h16"/></svg>
+        스캔해서 추가
+      </button>
+      <button class="btn btn-secondary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        바로 사용
+      </button>
+    </div>
+
+    <section>
+      <div class="sec-head">
+        <div><div class="sec-kicker">01 / low-stock</div><div class="sec-title">구매 필요</div></div>
+        <div><span class="badge warn">2</span><a class="sec-link" href="#">장보기 →</a></div>
+      </div>
+      <div class="card">
+        <div class="row"><span class="dot warn"></span>
+          <div class="row-main"><div class="row-name">두부</div><div class="row-sub">300g · min 1</div></div>
+          <div class="row-qty qty-zero">0 <small>개</small></div>
+        </div>
+        <div class="row"><span class="dot warn"></span>
+          <div class="row-main"><div class="row-name">계란</div><div class="row-sub">특란 30구 · min 6</div></div>
+          <div class="row-qty">2 <small>개</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head">
+        <div><div class="sec-kicker">02 / expiring</div><div class="sec-title">유통기한 임박</div></div>
+        <span class="badge">2</span>
+      </div>
+      <div class="card">
+        <div class="row">
+          <div class="row-main"><div class="row-name">우유</div><div class="row-sub">1L · 냉장고 · qty 2</div></div>
+          <span class="chip chip-d1">D-1</span>
+        </div>
+        <div class="row">
+          <div class="row-main"><div class="row-name">스트링 치즈</div><div class="row-sub">냉장고 · qty 1</div></div>
+          <span class="chip chip-d2">D-2</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head">
+        <div><div class="sec-kicker">03 / recent</div><div class="sec-title">최근 사용</div></div>
+        <span class="badge">2</span>
+      </div>
+      <div class="card">
+        <div class="row">
+          <div class="row-main"><div class="row-name">계란</div><div class="row-sub">특란 30구 · 냉장고</div></div>
+          <div class="stepper"><button class="step-btn">−</button><span class="qty">2</span><button class="step-btn add">+</button></div>
+        </div>
+        <div class="row">
+          <div class="row-main"><div class="row-name">양파</div><div class="row-sub">1망 · 팬트리</div></div>
+          <div class="stepper"><button class="step-btn">−</button><span class="qty">4</span><button class="step-btn add">+</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head">
+        <div><div class="sec-kicker">04 / all-items</div><div class="sec-title">전체 재고</div></div>
+        <span class="badge">12</span>
+      </div>
+      <div class="search">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9fb0b3" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input placeholder="상품명·브랜드 검색">
+      </div>
+      <div class="chips">
+        <span class="fchip on">전체</span><span class="fchip">냉장고</span><span class="fchip">냉동실</span><span class="fchip">팬트리</span>
+      </div>
+      <div class="card">
+        <div class="row"><span class="dot ok"></span>
+          <div class="row-main"><div class="row-name">식빵</div><div class="row-sub">팬트리</div></div>
+          <div class="row-qty">1 <small>개</small></div>
+        </div>
+        <div class="row"><span class="dot ok"></span>
+          <div class="row-main"><div class="row-name">물티슈</div><div class="row-sub">팬트리</div></div>
+          <div class="row-qty">6 <small>개</small></div>
+        </div>
+      </div>
+      <a class="more" href="#">→ 전체 12개 더 보기</a>
+    </section>
+  </div>
+
+  <nav class="tabbar">
+    <div class="tab active">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5.5 9.5V20a1 1 0 001 1h11a1 1 0 001-1V9.5"/></svg>
+      <span>홈</span><i class="ind"></i>
+    </div>
+    <div class="tab">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3.5 8.5L12 13l8.5-4.5M12 13v8.5"/></svg>
+      <span>재고</span>
+    </div>
+    <div class="tab">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 4h2.5l2.4 11h9.6l2-8H6"/></svg>
+      <span>장보기</span>
+    </div>
+  </nav>
+</div>
+</body>
+</html>

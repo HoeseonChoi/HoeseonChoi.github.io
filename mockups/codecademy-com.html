@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>우리집 — codecademy-com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#10162F;
+    --navy-900:#0A0D1C;
+    --panel:#1D2340;
+    --edge:rgba(255,255,255,.12);
+    --edge-soft:rgba(255,255,255,.08);
+    --white:#ffffff;
+    --w65:rgba(255,255,255,.65);
+    --w45:rgba(255,255,255,.45);
+    --yellow:#FFD300;
+    --blue:#66C4FF;
+    --hyper:#3A10E5;
+    --pink:#F966FF;
+    --red:#DC5879;
+    --green:#008A27;
+    --green-pale:#EAFDC6;
+    --beige:#FFF0E5;
+    --sans:'Space Grotesk','Noto Sans KR',-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  body{
+    min-height:100vh;display:grid;place-items:center;
+    background:#15171f;font-family:var(--sans);color:var(--white);
+  }
+  .phone{
+    width:390px;height:844px;background:var(--navy);
+    overflow:hidden;display:flex;flex-direction:column;position:relative;
+  }
+  /* ---------- status bar ---------- */
+  .statusbar{
+    height:30px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;
+    padding:0 26px 4px 30px;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.85);
+  }
+  .statusbar .sicons{display:flex;align-items:center;gap:5px}
+  /* ---------- header ---------- */
+  .head{
+    flex:none;display:flex;align-items:flex-start;justify-content:space-between;
+    padding:4px 20px 0;
+  }
+  .head h1{font-size:25px;font-weight:700;line-height:1.15;letter-spacing:-.01em}
+  .head .under{width:44px;height:4px;background:var(--yellow);border-radius:2px;margin-top:6px}
+  .head nav{display:flex;gap:18px;padding-top:7px}
+  .head nav a{font-size:13.5px;font-weight:500;color:var(--w65);text-decoration:none}
+  /* ---------- scroll content ---------- */
+  .scroll{flex:1;overflow:hidden;padding:12px 18px 0}
+  /* ---------- CTA ---------- */
+  .cta{display:flex;gap:10px}
+  .btn{
+    flex:1;height:44px;border-radius:4px;display:flex;align-items:center;justify-content:center;
+    gap:8px;font-family:var(--sans);font-size:14.5px;font-weight:700;letter-spacing:.005em;
+    box-shadow:0 4px 0 var(--navy-900);
+  }
+  .btn.primary{background:var(--yellow);color:var(--navy);border:none}
+  .btn.secondary{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.5)}
+  /* ---------- sections ---------- */
+  .sec{margin-top:15px}
+  .sec-head{
+    display:flex;align-items:baseline;gap:8px;padding:0 2px;margin-bottom:8px;
+  }
+  .sec-title{font-size:14px;font-weight:700;color:var(--white);letter-spacing:.01em}
+  .sec-count{
+    font-size:11px;font-weight:700;color:var(--navy);
+    background:var(--yellow);padding:1.5px 7px;border-radius:4px;
+  }
+  .sec-count.cool{background:rgba(255,255,255,.14);color:var(--w65)}
+  .sec-link{margin-left:auto;font-size:12.5px;font-weight:600;color:var(--blue);display:flex;align-items:center;gap:3px}
+  .card{
+    background:var(--panel);border:1px solid var(--edge);border-radius:8px;overflow:hidden;
+  }
+  .row{
+    display:flex;align-items:center;gap:10px;padding:7px 12px;
+  }
+  .row + .row{border-top:1px solid var(--edge-soft)}
+  .thumb{
+    width:30px;height:30px;flex:none;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;font-size:16px;
+    border:1px solid rgba(16,22,47,.25);
+  }
+  .t-y{background:var(--yellow)} .t-b{background:var(--blue)} .t-p{background:var(--pink)}
+  .t-g{background:var(--green-pale)} .t-be{background:var(--beige)} .t-r{background:var(--red)}
+  .rbody{flex:1;min-width:0}
+  .rname{font-size:13.5px;font-weight:600;line-height:1.25}
+  .rmeta{font-size:11px;color:var(--w45);line-height:1.35;margin-top:1px}
+  .rqty{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+  .rqty.zero{color:var(--red)}
+  /* D-day chip */
+  .dchip{
+    flex:none;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;
+    letter-spacing:.02em;font-variant-numeric:tabular-nums;
+  }
+  .d1{background:var(--red);color:#fff}
+  .d3{background:var(--yellow);color:var(--navy)}
+  /* stepper */
+  .step{display:flex;align-items:center;gap:8px;flex:none}
+  .step button{
+    width:26px;height:26px;border-radius:4px;border:1px solid rgba(255,255,255,.22);
+    background:rgba(255,255,255,.06);color:var(--white);font-size:15px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+  .step .qv{font-size:14px;font-weight:700;min-width:20px;text-align:center;font-variant-numeric:tabular-nums}
+  /* ---------- search + chips ---------- */
+  .search{
+    height:36px;border:1.5px solid rgba(255,255,255,.22);border-radius:4px;background:var(--navy-900);
+    display:flex;align-items:center;gap:8px;padding:0 12px;margin-bottom:8px;
+    color:var(--w45);font-size:13px;
+  }
+  .chips{display:flex;gap:6px;margin-bottom:12px}
+  .chip{
+    font-size:12px;font-weight:600;color:var(--w65);
+    border:1.5px solid rgba(255,255,255,.25);border-radius:4px;padding:5px 11px;
+  }
+  .chip.on{background:var(--yellow);color:var(--navy);border-color:var(--yellow)}
+  .more{
+    margin-top:8px;padding:6px 2px 0;font-size:12.5px;font-weight:600;color:var(--blue);
+    display:flex;align-items:center;gap:4px;
+  }
+  /* ---------- tab bar ---------- */
+  .tabbar{
+    flex:none;height:70px;background:var(--navy-900);border-top:1px solid var(--edge);
+    display:flex;padding:8px 8px 18px;
+  }
+  .tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
+    color:var(--w45);font-size:11px;font-weight:600;
+  }
+  .tab.on{color:var(--yellow)}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="sicons">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="4.5" y="5" width="3" height="6" rx="0.5"/><rect x="9" y="2.5" width="3" height="8.5" rx="0.5"/><rect x="13.5" y="0" width="3" height="11" rx="0.5"/></svg>
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 9.5a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8zM8 6c-1.7 0-3.2.7-4.3 1.8l1.4 1.4A4 4 0 0 1 8 8a4 4 0 0 1 2.9 1.2l1.4-1.4A6 6 0 0 0 8 6z" transform="translate(0 -1.5)"/><path d="M8 2C5 2 2.3 3.2.4 5.1l1.4 1.4A8.8 8.8 0 0 1 8 4c2.4 0 4.6 1 6.2 2.5l1.4-1.4A11 11 0 0 0 8 2z" transform="translate(0 -1.5)"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="20" height="11" rx="3" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="15" height="8" rx="1.5" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z" fill="currentColor" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="head">
+    <div>
+      <h1>우리집</h1>
+      <div class="under"></div>
+    </div>
+    <nav><a href="#">가족</a><a href="#">설정</a></nav>
+  </div>
+
+  <div class="scroll">
+    <div class="cta">
+      <button class="btn primary">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 5V2.8c0-.7.6-1.3 1.3-1.3H5M10 1.5h2.2c.7 0 1.3.6 1.3 1.3V5M13.5 10v2.2c0 .7-.6 1.3-1.3 1.3H10M5 13.5H2.8c-.7 0-1.3-.6-1.3-1.3V10M1.5 7.5h12"/></svg>
+        스캔해서 추가
+      </button>
+      <button class="btn secondary">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 1.5v11M2 7l5-5.5L12 7"/></svg>
+        바로 사용
+      </button>
+    </div>
+
+    <!-- 구매 필요 -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="sec-title">구매 필요</span>
+        <span class="sec-count">2</span>
+        <span class="sec-link">장보기
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+        </span>
+      </div>
+      <div class="card">
+        <div class="row">
+          <div class="thumb t-r">🧈</div>
+          <div class="rbody">
+            <div class="rname">두부</div>
+            <div class="rmeta">300g · 최소 2개</div>
+          </div>
+          <div class="rqty zero">0개</div>
+        </div>
+        <div class="row">
+          <div class="thumb t-be">🫗</div>
+          <div class="rbody">
+            <div class="rname">식용유</div>
+            <div class="rmeta">500ml · 최소 2개</div>
+          </div>
+          <div class="rqty zero">1개</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 유통기한 임박 -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="sec-title">유통기한 임박</span>
+        <span class="sec-count cool">2</span>
+      </div>
+      <div class="card">
+        <div class="row">
+          <div class="thumb t-b">🥛</div>
+          <div class="rbody">
+            <div class="rname">서울우유</div>
+            <div class="rmeta">1L · 냉장고 · 9/24</div>
+          </div>
+          <span class="dchip d1">D-1</span>
+          <div class="rqty">2개</div>
+        </div>
+        <div class="row">
+          <div class="thumb t-y">🍦</div>
+          <div class="rbody">
+            <div class="rname">요거트</div>
+            <div class="rmeta">4입 · 냉장고 · 9/26</div>
+          </div>
+          <span class="dchip d3">D-3</span>
+          <div class="rqty">4개</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 최근 사용 -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="sec-title">최근 사용</span>
+        <span class="sec-count cool">3</span>
+      </div>
+      <div class="card">
+        <div class="row">
+          <div class="thumb t-y">🥚</div>
+          <div class="rbody">
+            <div class="rname">계란</div>
+            <div class="rmeta">10구</div>
+          </div>
+          <div class="step"><button>−</button><span class="qv">8</span><button>＋</button></div>
+        </div>
+        <div class="row">
+          <div class="thumb t-g">🧅</div>
+          <div class="rbody">
+            <div class="rname">양파</div>
+            <div class="rmeta">1망</div>
+          </div>
+          <div class="step"><button>−</button><span class="qv">3</span><button>＋</button></div>
+        </div>
+        <div class="row">
+          <div class="thumb t-p">🍜</div>
+          <div class="rbody">
+            <div class="rname">라면</div>
+            <div class="rmeta">5입</div>
+          </div>
+          <div class="step"><button>−</button><span class="qv">4</span><button>＋</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 전체 재고 -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="sec-title">전체 재고</span>
+        <span class="sec-count cool">12</span>
+      </div>
+      <div class="search">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="5.5" cy="5.5" r="4"/><path d="M8.8 8.8L12 12"/></svg>
+        상품명·브랜드 검색
+      </div>
+      <div class="chips">
+        <span class="chip on">전체</span>
+        <span class="chip">냉장고</span>
+        <span class="chip">냉동고</span>
+        <span class="chip">팬트리</span>
+      </div>
+      <div class="card">
+        <div class="row">
+          <div class="thumb t-b">🥛</div>
+          <div class="rbody">
+            <div class="rname">서울우유</div>
+            <div class="rmeta">냉장고 · 유통기한 9/24</div>
+          </div>
+          <div class="step"><button>−</button><span class="qv">2</span><button>＋</button></div>
+        </div>
+        <div class="row">
+          <div class="thumb t-g">🥬</div>
+          <div class="rbody">
+            <div class="rname">김치</div>
+            <div class="rmeta">냉장고 · 유통기한 10/02</div>
+          </div>
+          <div class="step"><button>−</button><span class="qv">1</span><button>＋</button></div>
+        </div>
+      </div>
+      <div class="more">더 보기 · 전체 12개
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+      </div>
+    </section>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab on">
+      <svg width="21" height="21" viewBox="0 0 21 21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 9.5L10.5 3 18 9.5V17a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 3 17V9.5z"/></svg>
+      홈
+    </div>
+    <div class="tab">
+      <svg width="21" height="21" viewBox="0 0 21 21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M10.5 2.5l7 3.8v8.4l-7 3.8-7-3.8V6.3l7-3.8z"/><path d="M3.5 6.3l7 3.8 7-3.8M10.5 10.1v8.4"/></svg>
+      재고
+    </div>
+    <div class="tab">
+      <svg width="21" height="21" viewBox="0 0 21 21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 4h2.2l1.8 9.5a1.5 1.5 0 0 0 1.5 1.2h7.2a1.5 1.5 0 0 0 1.5-1.2L18.5 7H6"/><circle cx="9" cy="18" r="1.1" fill="currentColor" stroke="none"/><circle cx="16" cy="18" r="1.1" fill="currentColor" stroke="none"/></svg>
+      장보기
+    </div>
+  </div>
+</div>
+</body>
+</html>
